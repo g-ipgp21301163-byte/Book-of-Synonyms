@@ -1,291 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Pastel Synonyms Book</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Book of Synonyms</title>
 
 <style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#dff7ff,#f6e6ff,#ffe6f2);
-  font-family:'Comic Sans MS',cursive;
-  overflow:hidden;
-  color:#444;
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fce3ff, #d6f7ff);
 }
 
-.bubble{
-  position:absolute;
-  border-radius:50%;
-  background:rgba(255,255,255,0.6);
-  animation:float 8s infinite ease-in-out;
+/* Sparkles */
+.sparkle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: float 6s infinite linear;
 }
-@keyframes float{
-  0%{transform:translateY(0);}
-  100%{transform:translateY(-600px);}
-}
-
-.book{
-  width:920px;
-  height:520px;
-  background:#fff;
-  border-radius:25px;
-  box-shadow:0 15px 30px rgba(0,0,0,0.15);
-  position:relative;
-  overflow:hidden;
+@keyframes float {
+  0% {transform: translateY(100vh);}
+  100% {transform: translateY(-10vh);}
 }
 
-.page{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-  text-align:center;
-}
-.active{ display:flex; }
-
-button{
-  padding:12px 25px;
-  border:none;
-  border-radius:25px;
-  background:linear-gradient(45deg,#ffb3d9,#ffd6a5);
-  cursor:pointer;
-  font-size:16px;
-  color:#444;
-  box-shadow:0 5px #e6a8c9;
-  transition:0.2s;
-}
-button:hover{ transform:scale(1.1); }
-button:active{
-  transform:translateY(3px);
-  box-shadow:0 2px #e6a8c9;
+/* Book container */
+.book {
+  display: flex;
+  width: 400vw;
+  height: 100vh;
+  transition: transform 0.8s ease-in-out;
 }
 
-.cover-title{
-  font-size:40px;
-  color:#ff80bf;
-  animation:glow 2s infinite alternate;
-}
-@keyframes glow{
-  from{ text-shadow:0 0 5px #fff;}
-  to{ text-shadow:0 0 15px #ffb3d9;}
-}
-
-input{
-  padding:10px;
-  border-radius:15px;
-  border:2px solid #ddd;
-  text-align:center;
+/* Pages */
+.page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.popup{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) scale(0);
-  background:#fff;
-  padding:20px;
-  border-radius:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.2);
-  transition:0.3s;
-  width:80%;
-  text-align:center;
-}
-.popup.show{
-  transform:translate(-50%,-50%) scale(1);
+/* Cover */
+.cover h1 {
+  font-size: 48px;
+  color: #ff66b2;
+  text-shadow: 2px 2px white;
 }
 
-.card-container{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:25px;
-  margin-top:15px;
+.btn {
+  padding: 15px 25px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 30px;
+  background: #ff8ad4;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 15px #ff8ad4;
+}
+.btn:hover {
+  transform: scale(1.1);
+  background: #ff4fb0;
 }
 
-.card{
-  background:#fff0f6;
-  padding:15px;
-  border-radius:15px;
-  width:180px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+/* Input */
+input {
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  outline: none;
 }
 
-.word{
-  color:#ff66a3;
-  font-weight:bold;
+/* Search */
+.search-box {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.controls{
-  position:absolute;
-  bottom:15px;
-  right:15px;
-  display:flex;
-  gap:10px;
+/* Popup */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
 }
 
-.warning{
-  color:#ff4d4d;
-  margin-top:10px;
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 70%;
+  text-align: center;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from {transform: scale(0.5);}
+  to {transform: scale(1);}
+}
+
+/* Synonym boxes */
+.synonym-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.syn-box {
+  background: #e6f7ff;
+  padding: 15px;
+  border-radius: 15px;
+  width: 200px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.syn-box button {
+  margin-top: 10px;
+  border: none;
+  background: #66ccff;
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Warning */
+.warning {
+  color: red;
+  margin-top: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
-<audio id="bgMusic" loop>
-  <source src="https://drive.google.com/uc?export=download&id=1lXKjOqvOMKnX2wRbpfPUeChigqEdcI1r" type="audio/mpeg">
-</audio>
+<div class="book" id="book">
 
-<div class="book">
+  <!-- COVER -->
+  <div class="page cover">
+    <h1>The Book of Synonyms</h1>
+    <button class="btn" onclick="goPage(1)">Open Book</button>
+  </div>
 
-<!-- COVER -->
-<div class="page active" id="page1">
-  <h1 class="cover-title">The Book of Synonyms</h1>
-  <button onclick="startBook()">Open Book</button>
+  <!-- NAME -->
+  <div class="page">
+    <h2>Enter Your Explorer's Name</h2>
+    <input id="nameInput" placeholder="Type your name..." />
+    <button class="btn" onclick="saveName()">Save & Continue</button>
+    <div class="warning" id="warn"></div>
+  </div>
+
+  <!-- GREETING -->
+  <div class="page">
+    <h2 id="greet">Welcome, Explorer!</h2>
+    <button class="btn" onclick="goPage(3)">Let's Explore</button>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="page">
+    <h2>Search an Adjective</h2>
+    <div class="search-box">
+      <input id="search" placeholder="happy, sad, fast..." />
+      <button class="btn" onclick="searchWord()">🔍</button>
+    </div>
+    <button class="btn" onclick="resetAll()">Reset</button>
+  </div>
+
 </div>
 
-<!-- NAME -->
-<div class="page" id="page2">
-  <h2>Explorer's Name</h2>
-  <input id="nameInput" placeholder="Enter your name">
-  <button onclick="saveName()">Enter</button>
-  <div class="warning" id="warning"></div>
-</div>
-
-<!-- GREETING -->
-<div class="page" id="page3">
-  <h2 id="welcome"></h2>
-  <button onclick="nextPage(4)">Let's Explore</button>
-</div>
-
-<!-- SEARCH -->
-<div class="page" id="page4">
-  <h2>Find a word ✨</h2>
-
-  <input id="searchInput" placeholder="Enter adjective">
-  <button onclick="searchWord()">🔍</button>
-
-  <div class="popup" id="popup"></div>
-
-  <div class="controls">
-    <button onclick="resetSearch()">Reset</button>
-    <button onclick="nextPage(1)">Close Book</button>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <h2 id="wordTitle"></h2>
+    <div class="synonym-container" id="synContainer"></div>
+    <button class="btn" onclick="closeModal()">Close</button>
   </div>
 </div>
 
-</div>
-
 <script>
-
-/* bubbles */
-for(let i=0;i<25;i++){
-  let b=document.createElement("div");
-  b.className="bubble";
-  b.style.width=b.style.height=(10+Math.random()*20)+"px";
-  b.style.left=Math.random()*100+"%";
-  b.style.bottom="-50px";
-  document.body.appendChild(b);
+// pages
+let currentPage = 0;
+function goPage(p){
+  currentPage = p;
+  document.getElementById("book").style.transform = `translateX(-${p * 100}vw)`;
 }
 
-/* navigation */
-function nextPage(n){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById("page"+n).classList.add("active");
-}
-
-/* start */
-function startBook(){
-  let music=document.getElementById("bgMusic");
-  music.volume=0.3;
-  music.play().catch(()=>{});
-  nextPage(2);
-}
-
-/* name */
+// name system
 function saveName(){
-  let name=document.getElementById("nameInput").value.trim();
-  let warn=document.getElementById("warning");
-
-  if(name===""){
-    warn.innerText="⚠ Please enter your name!";
+  let name = document.getElementById("nameInput").value.trim();
+  if(name === ""){
+    document.getElementById("warn").innerText = "Please enter your name!";
     return;
   }
-
-  warn.innerText="";
-  localStorage.setItem("name",name);
-  document.getElementById("welcome").innerText="Welcome, Explorer "+name;
-  nextPage(3);
+  localStorage.setItem("explorer", name);
+  document.getElementById("greet").innerText = `Welcome, Explorer ${name}!`;
+  goPage(2);
 }
 
-/* 10 ADJECTIVES */
-const words={
-happy:["joyful","cheerful","She felt joyful today.","He is a cheerful boy."],
-sad:["unhappy","gloomy","She looked unhappy.","The weather is gloomy."],
-excited:["thrilled","eager","She was thrilled to play.","He is eager to learn."],
-angry:["mad","furious","He felt mad.","She was furious at him."],
-brave:["courageous","bold","The knight is courageous.","She made a bold move."],
-long:["lengthy","extended","It was a lengthy story.","The meeting was extended."],
-fast:["quick","rapid","He is quick.","The car is rapid."],
-slow:["sluggish","unhurried","The turtle is sluggish.","He walked unhurriedly."],
-pretty:["beautiful","lovely","She is beautiful.","The flower is lovely."],
-ugly:["unattractive","unpleasant","The place is unattractive.","The smell is unpleasant."]
+// dataset
+const data = {
+  happy: [["joyful","She felt joyful when she won."],["cheerful","He is cheerful every day."]],
+  sad: [["gloomy","She felt gloomy after the rain."],["downcast","He looked downcast today."]],
+  excited: [["thrilled","She was thrilled to see fireworks."],["energetic","He felt energetic in class."]],
+  angry: [["furious","He was furious at the mistake."],["irritated","She felt irritated by noise."]],
+  brave: [["courageous","The boy was courageous in danger."],["bold","She made a bold choice."]],
+  long: [["lengthy","It was a lengthy journey."],["extended","We had an extended break."]],
+  fast: [["quick","He is a quick runner."],["rapid","The train is rapid."]],
+  slow: [["lazy","The turtle is slow but steady."],["unhurried","She walked in an unhurried way."]],
+  pretty: [["beautiful","She is beautiful in the dress."],["lovely","The garden is lovely."]],
+  ugly: [["unattractive","The old wall is unattractive."],["plain","The design is plain."]]
 };
 
-/* SMART SEARCH FIX */
-function cleanInput(text){
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z]/g,"");
-}
-
+// search
 function searchWord(){
-  let input=cleanInput(document.getElementById("searchInput").value);
-  let popup=document.getElementById("popup");
-
-  if(!words[input]){
-    popup.innerHTML="<p>Word not found 😢</p>";
-    popup.classList.add("show");
+  let word = document.getElementById("search").value.toLowerCase();
+  if(!data[word]){
+    alert("Word not found!");
     return;
   }
 
-  let w=words[input];
+  document.getElementById("wordTitle").innerText = word;
 
-  popup.innerHTML=`
-    <h3>${input}</h3>
+  let container = document.getElementById("synContainer");
+  container.innerHTML = "";
 
-    <div class="card-container">
+  data[word].forEach(item=>{
+    let div = document.createElement("div");
+    div.className = "syn-box";
 
-      <div class="card">
-        <div class="word">${w[0]}</div>
-        <p>${w[2]}</p>
-      </div>
+    div.innerHTML = `
+      <h3>${item[0]}</h3>
+      <p>${item[1]}</p>
+      <button onclick="speak('${item[0]}')">🔊 Word</button>
+      <button onclick="speak('${item[1]}')">🔊 Sentence</button>
+    `;
 
-      <div class="card">
-        <div class="word">${w[1]}</div>
-        <p>${w[3]}</p>
-      </div>
+    container.appendChild(div);
+  });
 
-    </div>
-  `;
-
-  popup.classList.add("show");
+  document.getElementById("modal").style.display = "flex";
 }
 
-/* reset */
-function resetSearch(){
-  document.getElementById("searchInput").value="";
-  document.getElementById("popup").classList.remove("show");
+// close
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
 }
 
+// reset
+function resetAll(){
+  document.getElementById("search").value = "";
+}
+
+// TTS
+function speak(text){
+  let msg = new SpeechSynthesisUtterance(text);
+  msg.rate = 0.9;
+  speechSynthesis.speak(msg);
+}
+
+// sparkles
+for(let i=0;i<40;i++){
+  let s = document.createElement("div");
+  s.className = "sparkle";
+  s.style.left = Math.random()*100 + "vw";
+  s.style.animationDuration = (3+Math.random()*5) + "s";
+  document.body.appendChild(s);
+}
+
+// soft click sound
+document.querySelectorAll(".btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = ctx.createOscillator();
+    osc.frequency.value = 600;
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  });
+});
 </script>
 
 </body>
