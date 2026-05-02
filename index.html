@@ -10,6 +10,7 @@
             --secondary: #ff6b6b;
             --accent: #feca57;
             --page-bg: #fffdf0;
+            --book-border: #5d4037;
         }
 
         body {
@@ -26,16 +27,27 @@
 
         /* Horizontal Book Container */
         #book-container {
-            width: 900px;
-            height: 550px;
+            width: 950px;
+            height: 580px;
             background: var(--page-bg);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             position: relative;
-            border: 10px solid #5d4037;
+            border: 12px solid var(--book-border);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+        }
+
+        /* Spine of the book effect */
+        #book-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: rgba(0,0,0,0.1);
+            z-index: 5;
         }
 
         .page {
@@ -47,16 +59,26 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.5s ease;
+            animation: fadeIn 0.6s ease;
+            text-align: center;
         }
 
         .active { display: flex; }
 
-        /* Front Cover Styles */
+        /* Front Cover Decor */
         .cover {
             background: #4a90e2;
             color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 20%);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: white;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            animation: twinkle 2s infinite ease-in-out;
         }
 
         .bubble {
@@ -66,242 +88,272 @@
             animation: float 4s infinite ease-in-out;
         }
 
-        /* Alive Buttons (3D Effect) */
+        /* Alive Buttons (3D) */
         .btn-alive {
-            padding: 15px 40px;
-            font-size: 1.5rem;
+            padding: 18px 45px;
+            font-size: 1.6rem;
             cursor: pointer;
             border: none;
             border-radius: 50px;
             background: var(--accent);
             color: #333;
-            box-shadow: 0 6px #d4a017;
+            box-shadow: 0 8px #d4a017;
             transition: all 0.1s;
             font-weight: bold;
-            margin-top: 20px;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .btn-alive:active {
             box-shadow: 0 2px #d4a017;
-            transform: translateY(4px);
+            transform: translateY(6px);
         }
 
-        /* Input Styles */
+        .btn-alive:hover { background: #ffdb4d; }
+
+        /* Input & Search */
         input {
-            padding: 15px;
-            border-radius: 10px;
-            border: 3px solid var(--primary);
-            font-size: 1.2rem;
-            width: 300px;
+            padding: 18px;
+            border-radius: 15px;
+            border: 4px solid var(--primary);
+            font-size: 1.3rem;
+            width: 350px;
             text-align: center;
+            outline: none;
         }
 
-        /* Popup Box Styles */
+        /* Result Popup */
         #synonym-popup {
             display: none;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80%;
+            width: 85%;
             background: white;
-            border: 5px solid var(--accent);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 0 100px rgba(0,0,0,0.5);
-            z-index: 10;
+            border: 6px solid var(--accent);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 0 150px rgba(0,0,0,0.6);
+            z-index: 20;
         }
 
-        .synonym-box {
-            display: flex;
-            justify-content: space-around;
+        .synonym-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .word-card {
-            flex: 1;
-            background: #eef5ff;
-            padding: 15px;
-            border-radius: 15px;
-            border-left: 10px solid var(--primary);
+            background: #f0f7ff;
+            padding: 20px;
+            border-radius: 20px;
+            border-bottom: 5px solid var(--primary);
+            text-align: left;
         }
 
-        .speak-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
+        .speak-icon {
+            font-size: 1.8rem;
             cursor: pointer;
-            margin-left: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            padding: 5px;
+            transition: transform 0.2s;
         }
+
+        .speak-icon:hover { transform: scale(1.2); color: var(--primary); }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.1); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; } to { opacity: 1; }
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
 <body>
 
+    <audio id="magicChime" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+    <audio id="pageFlip" src="https://assets.mixkit.co/active_storage/sfx/1476/1476-preview.mp3"></audio>
+    <audio id="errorSound" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+
     <div id="book-container">
         <div id="page1" class="page active cover">
-            <div class="bubble" style="width: 40px; height: 40px; top: 10%; left: 20%;"></div>
-            <div class="bubble" style="width: 20px; height: 20px; bottom: 15%; right: 15%;"></div>
-            <h1 style="font-size: 4rem;">The Magic Synonym Book</h1>
-            <p>A Wonderful World of Words!</p>
+            <div class="bubble" style="width: 60px; height: 60px; top: 10%; left: 10%;"></div>
+            <div class="bubble" style="width: 30px; height: 30px; bottom: 20%; right: 15%;"></div>
+            <div class="sparkle" style="top: 20%; right: 20%;"></div>
+            <div class="sparkle" style="bottom: 30%; left: 15%;"></div>
+            
+            <h1 style="font-size: 4.5rem; margin-bottom: 10px;">The Magic<br>Synonym Book</h1>
+            <p style="font-size: 1.5rem;">Explore a world of amazing words!</p>
             <button class="btn-alive" onclick="nextPage(2)">Open Book 📖</button>
         </div>
 
         <div id="page2" class="page">
-            <h2>Welcome to the Library!</h2>
-            <p>What is your name, young explorer?</p>
-            <input type="text" id="userName" placeholder="Type your name here...">
-            <button class="btn-alive" onclick="saveName()">Next Page</button>
+            <h2 style="font-size: 2.5rem; color: var(--primary);">Who is exploring today?</h2>
+            <p>Please enter your name to start your journey.</p>
+            <input type="text" id="userName" placeholder="Your Name Here..." autocomplete="off">
+            <button class="btn-alive" onclick="saveName()">Write Name in Book ✍️</button>
         </div>
 
         <div id="page3" class="page">
-            <h1 id="greeting">Welcome, Explorer!</h1>
-            <p>Are you ready to find amazing synonyms?</p>
+            <h1 id="greeting" style="font-size: 3.5rem; color: #2c3e50;">Welcome, Explorer!</h1>
+            <p style="font-size: 1.4rem;">The book is ready for your discoveries.</p>
             <button class="btn-alive" onclick="nextPage(4)">Let's Explore 🚀</button>
         </div>
 
         <div id="page4" class="page">
-            <h2>🔎 Synonym Search</h2>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="searchInput" placeholder="Enter an adjective (e.g., Happy)">
-                <button class="btn-alive" style="margin-top: 0;" onclick="searchWord()">Search</button>
+            <h2 style="font-size: 2rem;">🔎 Search for an Adjective</h2>
+            <div style="display: flex; gap: 15px; margin-bottom: 10px;">
+                <input type="text" id="searchInput" placeholder="e.g. Happy, Brave, Fast...">
+                <button class="btn-alive" style="margin: 0;" onclick="searchWord()">Search</button>
             </div>
-            <p style="font-size: 0.9rem; color: #666;">Try: Happy, Sad, Brave, Fast, Ugly...</p>
+            <p style="color: #888;">Try one of these: happy, sad, excited, angry, brave, long, fast, slow, pretty, ugly</p>
             
-            <div style="margin-top: 40px;">
-                <button class="btn-alive" style="background: #ccc; box-shadow: 0 6px #999;" onclick="resetBook()">Reset Book</button>
-                <button class="btn-alive" style="background: var(--secondary); box-shadow: 0 6px #c0392b;" onclick="closeBook()">Close Book</button>
+            <div style="margin-top: 50px; display: flex; gap: 20px;">
+                <button class="btn-alive" style="background: #e0e0e0; box-shadow: 0 8px #999;" onclick="resetBook()">Reset 🔄</button>
+                <button class="btn-alive" style="background: var(--secondary); box-shadow: 0 8px #c0392b; color: white;" onclick="closeBook()">Close Book 📕</button>
             </div>
         </div>
 
         <div id="synonym-popup">
-            <h2 id="result-title">Results</h2>
-            <div class="synonym-box" id="result-content"></div>
-            <button class="btn-alive" onclick="closePopup()">Close Search</button>
+            <h2 id="result-title" style="color: var(--primary); margin-top: 0;"></h2>
+            <div class="synonym-grid" id="result-content"></div>
+            <button class="btn-alive" style="margin: 20px auto 0;" onclick="closePopup()">Go Back ⬅️</button>
         </div>
     </div>
 
-    <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
-
 <script>
     let explorerName = "";
+    
     const dictionary = {
         "happy": [
-            { word: "Joyful", sentence: "She was joyful when she saw her birthday cake." },
-            { word: "Cheerful", sentence: "The birds sang a cheerful song in the morning." }
+            { word: "Joyful", sentence: "The children were joyful when they saw the puppies." },
+            { word: "Cheerful", sentence: "She gave a cheerful wave to her friends." }
         ],
         "sad": [
-            { word: "Unhappy", sentence: "The boy felt unhappy because it was raining." },
-            { word: "Gloomy", sentence: "It was a gloomy day with gray clouds everywhere." }
+            { word: "Unhappy", sentence: "He felt unhappy because he lost his favorite toy." },
+            { word: "Gloomy", sentence: "The rain made it a gloomy afternoon." }
         ],
         "excited": [
-            { word: "Thrilled", sentence: "I was thrilled to go to the zoo!" },
-            { word: "Eager", sentence: "The dog was eager to go for a walk." }
+            { word: "Thrilled", sentence: "I was thrilled to win a gold medal!" },
+            { word: "Eager", sentence: "The students were eager to start the science project." }
         ],
         "angry": [
-            { word: "Mad", sentence: "The giant was mad because his treasure was gone." },
-            { word: "Furious", sentence: "He was furious when he broke his favorite toy." }
+            { word: "Mad", sentence: "The cook was mad when the cake burned." },
+            { word: "Furious", sentence: "The king was furious when his crown went missing." }
         ],
         "brave": [
-            { word: "Fearless", sentence: "The fearless knight fought the dragon." },
-            { word: "Courageous", sentence: "It was courageous of her to speak in front of the class." }
+            { word: "Fearless", sentence: "A fearless explorer climbed the tall mountain." },
+            { word: "Courageous", sentence: "The courageous firefighter saved the cat." }
         ],
         "long": [
-            { word: "Lengthy", sentence: "We went on a lengthy trip across the country." },
-            { word: "Extended", sentence: "The giraffe has an extended neck to reach leaves." }
+            { word: "Lengthy", sentence: "The teacher gave a lengthy speech about history." },
+            { word: "Extended", sentence: "The bridge was extended to reach the other side." }
         ],
         "fast": [
-            { word: "Quick", sentence: "Be quick or we will miss the bus!" },
-            { word: "Speedy", sentence: "The speedy rabbit won the race easily." }
+            { word: "Quick", sentence: "He took a quick drink of water before the race." },
+            { word: "Speedy", sentence: "The speedy car zoomed past the finish line." }
         ],
         "slow": [
-            { word: "Sluggish", sentence: "The turtle was sluggish on the hot sand." },
-            { word: "Steady", sentence: "He took slow and steady steps up the hill." }
+            { word: "Sluggish", sentence: "The snail moved in a sluggish way across the leaf." },
+            { word: "Steady", sentence: "The turtle made slow and steady progress." }
         ],
         "pretty": [
-            { word: "Beautiful", sentence: "The garden was full of beautiful flowers." },
-            { word: "Lovely", sentence: "She wore a lovely dress to the party." }
+            { word: "Beautiful", sentence: "The sunset over the ocean was beautiful." },
+            { word: "Lovely", sentence: "She had a lovely garden full of roses." }
         ],
         "ugly": [
-            { word: "Unpleasant", sentence: "The troll had an unpleasant face." },
-            { word: "Plain", sentence: "The bird looked plain until it spread its wings." }
+            { word: "Unpleasant", sentence: "The monster had an unpleasant green face." },
+            { word: "Plain", sentence: "The gray bird looked plain compared to the peacock." }
         ]
     };
 
-    function playClick() {
-        document.getElementById('clickSound').play();
+    function playSound(id) {
+        const sound = document.getElementById(id);
+        sound.currentTime = 0;
+        sound.play();
     }
 
     function nextPage(pageNum) {
-        playClick();
+        playSound('pageFlip');
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById('page' + pageNum).classList.add('active');
     }
 
     function saveName() {
-        const input = document.getElementById('userName').value;
-        if (input.trim() === "") {
+        const nameInput = document.getElementById('userName').value.trim();
+        if (nameInput === "") {
+            playSound('errorSound');
             alert("Enter your name first!");
         } else {
-            explorerName = input;
-            document.getElementById('greeting').innerText = "Welcome, Explorer " + explorerName + "!";
+            explorerName = nameInput;
+            document.getElementById('greeting').innerText = `Welcome, Explorer ${explorerName}!`;
+            playSound('magicChime');
             nextPage(3);
         }
     }
 
     function searchWord() {
-        playClick();
         const input = document.getElementById('searchInput').value.toLowerCase().trim();
         const popup = document.getElementById('synonym-popup');
         const content = document.getElementById('result-content');
         
         if (dictionary[input]) {
+            playSound('magicChime');
             document.getElementById('result-title').innerText = "Synonyms for: " + input.toUpperCase();
             content.innerHTML = "";
+            
             dictionary[input].forEach(item => {
                 content.innerHTML += `
                     <div class="word-card">
-                        <h3>${item.word} <button class="speak-btn" onclick="speak('${item.word}. ${item.sentence}')">🔊</button></h3>
-                        <p><em>Example: ${item.sentence}</em></p>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 style="margin:0; font-size:1.8rem;">${item.word}</h3>
+                            <span class="speak-icon" onclick="speak('${item.word}. ${item.sentence}')">🔊</span>
+                        </div>
+                        <p style="margin-top:10px; color:#555;"><em>${item.sentence}</em></p>
                     </div>
                 `;
             });
             popup.style.display = 'block';
         } else {
-            alert("Word not found! Try one of the 10 words like 'Happy' or 'Brave'.");
+            playSound('errorSound');
+            alert("Please check your spelling! Try: Happy, Sad, Brave, Fast...");
         }
     }
 
     function closePopup() {
-        playClick();
+        playSound('pageFlip');
         document.getElementById('synonym-popup').style.display = 'none';
     }
 
     function speak(text) {
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = text;
-        msg.rate = 0.9;
-        window.speechSynthesis.speak(msg);
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.85; // Slightly slower for children
+        window.speechSynthesis.speak(utterance);
     }
 
     function resetBook() {
-        playClick();
+        playSound('pageFlip');
         document.getElementById('searchInput').value = "";
         nextPage(4);
     }
 
     function closeBook() {
-        playClick();
-        location.reload(); // Restarts to cover
+        playSound('pageFlip');
+        setTimeout(() => location.reload(), 500);
     }
 </script>
 </body>
